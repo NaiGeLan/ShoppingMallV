@@ -76,3 +76,10 @@ export function getProdInfoApi(prodId) {
 //     method: "get",
 //   });
 // }
+
+// export function upLoadFileApi() {
+//   return request({
+//     url: "/admin/file/upload/element",
+//     method: "get",
+//   });
+// }

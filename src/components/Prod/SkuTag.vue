@@ -1,5 +1,6 @@
 <template>
   <div class="mod-prod-sku-tag">
+    {{ props }}
     <el-form-item label="商品规格">
       <el-button size="mini" @click="shopTagInput()">添加规格</el-button>
       <el-divider />
@@ -116,10 +117,16 @@ const emit = defineEmits(["change"]);
 const skuList = ref([]);
 const value = ref([]);
 const isShowTagInput = ref(false);
+const props = defineProps({
+  skuListProps: {
+    required: false,
+  },
+});
 const addTagInput = reactive({
   propName: "",
   selectValues: [],
 });
+
 const type = ref(0);
 const tagItemName = ref("");
 const tagName = ref("");
@@ -153,9 +160,9 @@ const unUseTags = computed(() => {
 });
 
 const skuTags = ref([]);
-const defalutSku = computed(() => {
-  // return store.state.prod.defalutSku;
-});
+// const defalutSku = computed(() => {
+//   // return store.state.prod.defalutSku;
+// });
 
 watch(skuTags, (val, oldVal) => {
   if (initing.value) {
@@ -343,6 +350,8 @@ const addTag = () => {
 onMounted(async () => {
   await getSpecList();
   await getlistSpecMaxValueId();
+  if (props.skuListProps.length > 0) {
+  }
 });
 </script>
 

@@ -14,7 +14,21 @@ const transportInfo = ref({
   transfeeFrees: [{ freeCityList: [] }],
 });
 
-const { deliveryTemplateId } = defineProps(["deliveryTemplateId"]);
+const props = defineProps({
+  deliveryTemplateId: {
+    type: String,
+  },
+  // data: {
+  //   type: Object,
+  //   required: true,
+  // },
+});
+
+// const props = defineProps({
+//   infoForm: {
+//     require: true,
+//   },
+// });
 const tableTitle = computed(() => {
   const titles = [
     ["首件(个)", "运费(元)", "续件(个)", "续费(元)"],
@@ -51,12 +65,16 @@ const changeTransport = async (transportId) => {
 };
 
 onMounted(async () => {
-  console.log(deliveryTemplateId);
+  console.log(props);
+
+  console.log(props.deliveryTemplateId);
+  transportId.value = props.deliveryTemplateId;
   await getTransportList();
 });
 </script>
 
 <template>
+  {{ props }}
   <div class="mod-prod-prod-transport">
     <el-form-item
       label="运费设置"

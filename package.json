@@ -47,6 +47,7 @@
     "@wangeditor/editor-for-vue": "5.1.10",
     "axios": "^1.4.0",
     "codemirror": "^5.65.13",
+    "crypto-js": "^4.1.1",
     "echarts": "^5.2.2",
     "element-plus": "^2.3.9",
     "lodash-es": "^4.17.21",
@@ -54,14 +55,13 @@
     "nprogress": "^0.2.0",
     "path-browserify": "^1.0.1",
     "path-to-regexp": "^6.2.0",
-    "pinia": "^2.0.33",
+    "pinia": "^2.1.6",
     "screenfull": "^6.0.0",
     "sortablejs": "^1.15.0",
     "vue": "^3.3.4",
     "vue-i18n": "9.2.2",
     "vue-router": "^4.2.0",
-    "xlsx": "^0.18.5",
-    "crypto-js": "^4.1.1"
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.6.3",

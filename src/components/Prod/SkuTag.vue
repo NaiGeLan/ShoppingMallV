@@ -1,6 +1,6 @@
 <template>
   <div class="mod-prod-sku-tag">
-    {{ props }}
+    <!-- {{ props }} -->
     <el-form-item label="商品规格">
       <el-button size="mini" @click="shopTagInput()">添加规格</el-button>
       <el-divider />
@@ -23,7 +23,7 @@
           :disable-transitions="false"
           @close="handleTagClose(tagIndex, tagItemIndex)"
         >
-          {{ tagItem.propValue }}
+          <!-- {{ tagItem.propValue }} -->
         </el-tag>
         <el-input
           class="input-new-tag"
@@ -99,15 +99,7 @@
 
 <script setup lang="ts">
 import { ElNotification } from "element-plus";
-import {
-  ref,
-  reactive,
-  computed,
-  watch,
-  nextTick,
-  onMounted,
-  defineEmits,
-} from "vue";
+import { ref, reactive, computed, watch, nextTick, onMounted } from "vue";
 import {
   getListSpecValueApi,
   getSpecListApi,
@@ -351,6 +343,8 @@ onMounted(async () => {
   await getSpecList();
   await getlistSpecMaxValueId();
   if (props.skuListProps.length > 0) {
+    console.log(props.skuListProps);
+    skuTags.value = props.skuListProps;
   }
 });
 </script>

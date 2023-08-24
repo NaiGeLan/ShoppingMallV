@@ -65,16 +65,16 @@ const changeTransport = async (transportId) => {
 };
 
 onMounted(async () => {
-  console.log(props);
+  console.log(JSON.parse(JSON.stringify(props)));
 
-  console.log(props.deliveryTemplateId);
-  transportId.value = props.deliveryTemplateId;
+  console.log(await props.deliveryTemplateId);
+  transportId.value = JSON.parse(JSON.stringify(props)).deliveryTemplateId;
   await getTransportList();
 });
 </script>
 
 <template>
-  {{ props }}
+  <!-- {{ props }} -->
   <div class="mod-prod-prod-transport">
     <el-form-item
       label="运费设置"

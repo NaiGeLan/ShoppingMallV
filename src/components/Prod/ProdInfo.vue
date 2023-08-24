@@ -32,14 +32,17 @@ const props = defineProps({
     type: Object,
     required: true,
   },
+  title: {
+    type: String,
+  },
 });
 
 const emit = defineEmits(["closeDialog"]);
-const rules = reactive({
-  parentId: [{ required: true, message: "上级部门不能为空", trigger: "blur" }],
-  name: [{ required: true, message: "部门名称不能为空", trigger: "blur" }],
-  sort: [{ required: true, message: "显示排序不能为空", trigger: "blur" }],
-});
+// const rules = reactive({
+//   parentId: [{ required: true, message: "上级部门不能为空", trigger: "blur" }],
+//   name: [{ required: true, message: "部门名称不能为空", trigger: "blur" }],
+//   sort: [{ required: true, message: "显示排序不能为空", trigger: "blur" }],
+// });
 
 const category = ref({
   list: [],
@@ -61,32 +64,34 @@ const handleCategoryChange = (val) => {
 
   infoForm.categoryId = val[val.length - 1];
 };
-const deptFormRef = ref(ElForm);
+const prodFormRef = ref(ElForm);
 /** 表单提交 */
-function handleSubmit() {
-  deptFormRef.value.validate((valid: any) => {
-    // if (valid) {
-    //   const deptId = formData.id;
-    //   loading.value = true;
-    //   if (deptId) {
-    //     updateDept(deptId, formData)
-    //       .then(() => {
-    //         ElMessage.success("修改成功");
-    //         closeDialog();
-    //         handleQuery();
-    //       })
-    //       .finally(() => (loading.value = false));
-    //   } else {
-    //     addDept(formData)
-    //       .then(() => {
-    //         ElMessage.success("新增成功");
-    //         closeDialog();
-    //         handleQuery();
-    //       })
-    //       .finally(() => (loading.value = false));
-    //   }
-    // }
-  });
+async function handleSubmit() {
+  console.log(await prodFormRef.value.validate());
+
+  // prodFormRef.value.validate((valid: any) => {
+  // if (valid) {
+  //   const deptId = formData.id;
+  //   loading.value = true;
+  //   if (deptId) {
+  //     updateDept(deptId, formData)
+  //       .then(() => {
+  //         ElMessage.success("修改成功");
+  //         closeDialog();
+  //         handleQuery();
+  //       })
+  //       .finally(() => (loading.value = false));
+  //   } else {
+  //     addDept(formData)
+  //       .then(() => {
+  //         ElMessage.success("新增成功");
+  //         closeDialog();
+  //         handleQuery();
+  //       })
+  //       .finally(() => (loading.value = false));
+  //   }
+  // }
+  // });
 }
 /** 关闭弹窗 */
 function closeDialog() {
@@ -96,8 +101,8 @@ function closeDialog() {
 
 /** 重置表单  */
 function resetForm() {
-  deptFormRef.value.resetFields();
-  deptFormRef.value.clearValidate();
+  prodFormRef.value.resetFields();
+  prodFormRef.value.clearValidate();
 }
 
 // 获取分类信息
@@ -119,7 +124,6 @@ const handleTransportUpdate = (val) => {
 const getProdInfo = async () => {
   const res = await getProdInfoApi(props.data);
   console.log(res);
-
   infoForm.prodId = res.data.prodId;
   infoForm.brief = res.data.brief;
   infoForm.prodName = res.data.prodName;
@@ -133,6 +137,7 @@ const getProdInfo = async () => {
   if (res.data.deliveryMode.hasUserPickUp) infoForm.deliveryMode = "UserPickUp";
   else infoForm.deliveryMode = "ShopDelivery";
   infoForm.deliveryTemplateId = res.data.deliveryTemplateId;
+  console.log(infoForm.deliveryTemplateId, 1111);
   category.value.selected = res.data.categoryId;
   console.log(category.value);
   console.log(props);
@@ -148,12 +153,13 @@ console.log(props);
 </script>
 
 <template>
-  <el-dialog :title="visible" width="600px" @closed="closeDialog">
-    <el-form :model="infoForm" label-width="100px">
+  <el-dialog :title="props.title" width="600px" @closed="closeDialog">
+    <!-- {{ infoForm }} -->
+    <el-form ref="prodFormRef" :model="prodFormRef" label-width="100px">
       <!-- {{ infoForm }} -->
       <!-- {{ props }} -->
       <el-form-item label="产品图片">
-        <MulPicUpload :imgs="infoForm.pic" />
+        <MulPicUpload :imgs="infoForm.imgs" />
       </el-form-item>
       <el-form-item label="状态">
         <el-radio-group v-model="infoForm.status">
@@ -161,11 +167,7 @@ console.log(props);
           <el-radio :label="0">下架</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item
-        label="产品分类"
-        :rules="[{ required: true, message: '请选择产品分类' }]"
-        prop="categoryId"
-      >
+      <el-form-item label="产品分类" prop="categoryId">
         <el-col :span="8">
           <el-cascader
             expand-trigger="hover"
@@ -177,10 +179,7 @@ console.log(props);
           />
         </el-col>
       </el-form-item>
-      <el-form-item
-        label="产品分组"
-        :rules="[{ required: true, message: '请选择产品分组' }]"
-      >
+      <el-form-item label="产品分组">
         <el-col :span="8">
           <el-select
             v-model="infoForm.tagList"
@@ -197,18 +196,7 @@ console.log(props);
           </el-select>
         </el-col>
       </el-form-item>
-      <el-form-item
-        label="产品名称"
-        prop="prodName"
-        :rules="[
-          { required: true, message: '产品名称不能为空' },
-          {
-            pattern: /\s\S+|S+\s|\S/,
-            message: '请输入正确的产品名称',
-            trigger: 'blur',
-          },
-        ]"
-      >
+      <el-form-item label="产品名称" prop="prodName">
         <el-col :span="8">
           <el-input
             v-model="infoForm.prodName"
@@ -217,18 +205,7 @@ console.log(props);
           />
         </el-col>
       </el-form-item>
-      <el-form-item
-        label="产品卖点"
-        prop="brief"
-        :rules="[
-          {
-            required: false,
-            pattern: /\s\S+|S+\s|\S/,
-            message: '请输入正确的产品卖点',
-            trigger: 'blur',
-          },
-        ]"
-      >
+      <el-form-item label="产品卖点" prop="brief">
         <el-col :span="8">
           <el-input
             v-model="infoForm.brief"
@@ -248,7 +225,7 @@ console.log(props);
 
       <prod-transport
         v-show="infoForm.deliveryMode === 'ShopDelivery'"
-        :deliveryTemplateId="infoForm.deliveryTemplateId"
+        v-model:deliveryTemplateId="infoForm.deliveryTemplateId"
         @update="handleTransportUpdate"
       />
       <sku-tag
@@ -256,20 +233,23 @@ console.log(props);
         :skuListProps="infoForm.skuList"
         @change="skuTagChangeSkuHandler"
       />
+      <!-- {{ infoForm.skuList }} -->
       <sku-table
         ref="skuTable"
-        v-model="infoForm.skuList"
+        v-model:skuList="infoForm.skuList"
         v-model:prodName="infoForm.prodName"
-        :skuListProps="infoForm.skuList"
       />
 
-      <!-- <el-form-item label="产品详情" prop="content">
-          <tiny-mce
-            v-model="infoForm.content"
-            ref="content"
-            style="width: 1000px"
-          />
-        </el-form-item>    -->
+      <el-form-item label="产品详情" prop="content">
+        <el-input
+          v-model="infoForm.content"
+          ref="content"
+          maxlength="30"
+          placeholder="Please input"
+          show-word-limit
+          type="textarea"
+        />
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="dataFormSubmit()">确定</el-button>
       </el-form-item>

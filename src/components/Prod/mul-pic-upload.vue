@@ -4,7 +4,7 @@ import { useUserStore } from "@/store/modules/user";
 const userStore = useUserStore();
 const dialogImageUrl = ref("");
 const dialogVisible = ref(false);
-const resourcesUrl = import.meta.env.VITE_APP_BASE_API;
+const resourcesUrl = "https://img.mall4j.com/";
 
 const emit = defineEmits(["update:value"]);
 const props = defineProps({
@@ -84,7 +84,7 @@ const adornUrl = (actionName: any) => {
 </script>
 
 <template>
-  {{ props }}
+  <!-- {{ props }} -->
   <div>
     <el-upload
       :action="adornUrl('/admin/file/upload/element')"

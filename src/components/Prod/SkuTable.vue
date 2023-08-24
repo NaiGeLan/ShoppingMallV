@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { ref, defineProps, computed } from "vue";
-
+import { ref, computed } from "vue";
+import { getSpecListApi } from "@/api/prod";
 const dbSpecs = ref([]);
 const dbSpecValues = ref([]);
 const specs = ref([]);
 const initing = ref(false);
 const props = defineProps({
-  value: {
-    default: [],
-    type: Array,
-  },
+  // value: {
+  //   default: [],
+  //   type: Array,
+  // },
   prodName: {
     default: "",
   },
@@ -19,24 +19,42 @@ const props = defineProps({
   },
 });
 
+const changeSkuStatus = (tagIndex) => {};
+const getSpecList = async () => {
+  console.log(JSON.parse(JSON.stringify(props)).skuList);
+  console.log(111);
+
+  const res = await getSpecListApi();
+  console.log(res);
+  dbSpecs.value = res.data;
+};
+const skuTags = computed(() => {
+  return JSON.parse(JSON.stringify(props)).skuList;
+});
 const tableLeftTitles = computed(() => {
+  console.log(skuTags.value);
+
   let res = [];
-  // for (let i = 0; i <= props.skuList.length; i++) {
-  //   const skuTag = props.skuList[i];
-  //   console.log(skuTag);
+  // for (let i = 0; i <= skuTags.value.length; i++) {
+  //   const skuTag = JSON.parse(JSON.stringify(props))[i];
+  //   console.log(JSON.parse(JSON.stringify(props)));
   //   res.push(skuTag.tagName);
   // }
   return res;
 });
 
-const changeSkuStatus = (tagIndex) => {};
+// const tableLeftTitles = computed(() => {})
+onMounted(async () => {
+  await getSpecList();
+});
 </script>
 
 <template>
+  <!-- {{ props }} -->
   <div class="mod-prod-sku-table">
     <el-form-item>
       <el-table
-        :data="props.value"
+        :data="props.skuList"
         border
         style="width: 100%; margin-top: 20px"
       >

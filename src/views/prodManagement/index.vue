@@ -81,15 +81,15 @@ async function openDialog(row: any) {
   dialog.visible = true;
 
   // await getProdInfo(row.prodId);
-  // if (deptId) {
-  //   dialog.title = "修改部门";
-  //   getDeptForm(deptId).then(({ data }) => {
-  //     Object.assign(formData, data);
-  //   });
-  // } else {
-  //   dialog.title = "新增部门";
-  //   formData.parentId = parentId ?? 0;
-  // }
+  if (row.prodId) {
+    dialog.title = "修改产品";
+    // getDeptForm(deptId).then(({ data }) => {
+    //   Object.assign(formData, data);
+    // });
+  } else {
+    dialog.title = "新增产品";
+    // formData.parentId = parentId ?? 0;
+  }
 }
 
 /** 删除部门 */
@@ -156,9 +156,7 @@ onMounted(async () => {
             搜索
           </el-button>
           <el-button @click="resetQuery"> <i-ep-refresh />重置 </el-button>
-          <el-button @click="addOrUpdateHandle">
-            <i-ep-refresh />新增
-          </el-button>
+          <el-button @click="openDialog"> <i-ep-refresh />新增 </el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -249,6 +247,7 @@ onMounted(async () => {
     v-if="dialog.visible"
     v-model="dialog.visible"
     :data="prodData"
+    v-model:title="dialog.title"
     @closeDialog="closeDialog"
   />
 </template>

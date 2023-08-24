@@ -83,3 +83,10 @@ export function getProdInfoApi(prodId) {
 //     method: "get",
 //   });
 // }
+
+// export function getSpecListApi() {
+//   return request({
+//     url: "/admin/file/upload/element",
+//     method: "get",
+//   });
+// }

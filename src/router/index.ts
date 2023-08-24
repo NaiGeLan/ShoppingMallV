@@ -15,7 +15,7 @@ const specificationManagement = () =>
 export const featureRoutes: RouteRecordRaw[] = [
   {
     path: "/prod",
-    component: prodManagement,
+    // component: prodManagement,
     redirect: "/prod/prod",
     meta: {
       title: "产品管理",
@@ -25,9 +25,9 @@ export const featureRoutes: RouteRecordRaw[] = [
     },
     children: [
       {
-        path: "/prod/prod",
+        path: "prod",
         component: prodManagement,
-        name: "User",
+        name: "prod",
         meta: {
           title: "产品管理",
           icon: "user",
@@ -36,9 +36,9 @@ export const featureRoutes: RouteRecordRaw[] = [
         },
       },
       {
-        path: "prod/classify",
+        path: "classify",
         component: classifyManagement,
-        name: "Role",
+        name: "classify",
         meta: {
           title: "分类管理",
           icon: "role",
@@ -58,9 +58,9 @@ export const featureRoutes: RouteRecordRaw[] = [
         },
       },
       {
-        path: "dept",
+        path: "comment",
         component: commentManagement,
-        name: "Dept",
+        name: "comment",
         meta: {
           title: "评论管理",
           icon: "tree",
@@ -69,9 +69,9 @@ export const featureRoutes: RouteRecordRaw[] = [
         },
       },
       {
-        path: "dict",
+        path: "spec",
         component: specificationManagement,
-        name: "DictType",
+        name: "spec",
         meta: {
           title: "规格管理",
           icon: "dict",

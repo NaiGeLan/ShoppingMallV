@@ -38,7 +38,11 @@ router.beforeEach(async (to, from, next) => {
       //   next(`/login?redirect=${to.path}`);
       //   NProgress.done();
       // }
-      next();
+      console.log(to.matched.length);
+
+      console.log(next());
+
+      next(to.matched[to.matched.length - 1]);
     }
   } else {
     // 未登录可以访问白名单页面

@@ -9,9 +9,10 @@ export const groupManagement = () =>
 // 静态路由
 export const commentManagement = () =>
   import("@/views/commentManagement/index.vue");
-const specificationManagement = () =>
+export const specificationManagement = () =>
   import("@/views/specificationManagement/index.vue");
-
+export const noticeManagement = () =>
+  import("@/views/noticeManagement/index.vue");
 export const featureRoutes: RouteRecordRaw[] = [
   {
     path: "/prod",
@@ -75,6 +76,74 @@ export const featureRoutes: RouteRecordRaw[] = [
         meta: {
           title: "规格管理",
           icon: "dict",
+          hidden: false,
+          keepAlive: true,
+        },
+      },
+    ],
+  },
+  {
+    path: "/mall",
+    // component: prodManagement,
+    redirect: "/mall/notice",
+    meta: {
+      title: "门店管理",
+      icon: "system",
+      hidden: false,
+      keepAlive: true,
+    },
+    children: [
+      {
+        path: "notice",
+        component: noticeManagement,
+        name: "notice",
+        meta: {
+          title: "公告管理",
+          icon: "user",
+          hidden: false,
+          keepAlive: true,
+        },
+      },
+      {
+        path: "spot",
+        component: classifyManagement,
+        name: "spot",
+        meta: {
+          title: "自提点管理",
+          icon: "role",
+          hidden: false,
+          keepAlive: true,
+        },
+      },
+      {
+        path: "fee",
+        component: classifyManagement,
+        name: "fee",
+        meta: {
+          title: "运费模版",
+          icon: "role",
+          hidden: false,
+          keepAlive: true,
+        },
+      },
+      {
+        path: "pics",
+        component: groupManagement,
+        name: "pics",
+        meta: {
+          title: "轮播图管理",
+          icon: "menu",
+          hidden: false,
+          keepAlive: true,
+        },
+      },
+      {
+        path: "hot-search",
+        component: commentManagement,
+        name: "hot-search",
+        meta: {
+          title: "热搜管理",
+          icon: "tree",
           hidden: false,
           keepAlive: true,
         },

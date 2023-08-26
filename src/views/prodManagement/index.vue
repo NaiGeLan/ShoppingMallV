@@ -75,7 +75,7 @@ async function addOrUpdateHandle(row: any) {
  * 打开弹窗
  *
  */
-async function openDialog(row: any) {
+async function openDialog(row?: any) {
   console.log(row.prodId);
   prodData.value = row.prodId;
   dialog.visible = true;
@@ -166,7 +166,7 @@ onMounted(async () => {
         <el-button
           v-hasPerm="['sys:dept:add']"
           type="success"
-          @click="openDialog(0, undefined)"
+          @click="openDialog()"
           ><i-ep-plus />新增</el-button
         >
         <el-button
@@ -186,7 +186,7 @@ onMounted(async () => {
         :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
         @selection-change="handleSelectionChange"
       >
-        <!-- <el-table-column type="selection" width="55" align="center" /> -->
+        <el-table-column type="selection" width="55" align="center" />
         <el-table-column prop="prodName" label="产品名字" min-width="50" />
         <el-table-column prop="oriPrice" label="商品原价" width="100" />
 
@@ -241,13 +241,12 @@ onMounted(async () => {
       :page-sizes="[5, 10, 15, 20]"
       v-model:current-page="pageIndex"
     />
+    <ProdInfo
+      v-if="dialog.visible"
+      v-model="dialog.visible"
+      :data="prodData"
+      v-model:title="dialog.title"
+      @closeDialog="closeDialog"
+    />
   </div>
-
-  <ProdInfo
-    v-if="dialog.visible"
-    v-model="dialog.visible"
-    :data="prodData"
-    v-model:title="dialog.title"
-    @closeDialog="closeDialog"
-  />
 </template>

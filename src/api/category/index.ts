@@ -26,3 +26,16 @@ export function getCategoryInfoApi(categoryId: any) {
     method: "get",
   });
 }
+
+/**
+ * 获取分类信息
+ *
+ */
+export function getListCategoryApi() {
+  // console.log(data);
+
+  return request({
+    url: "/prod/category/listCategory",
+    method: "get",
+  });
+}

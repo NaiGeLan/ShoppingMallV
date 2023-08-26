@@ -40,9 +40,9 @@ router.beforeEach(async (to, from, next) => {
       // }
       console.log(to.matched.length);
 
-      console.log(next());
-
-      next(to.matched[to.matched.length - 1]);
+      // console.log(next());
+      next();
+      // next(to.matched[to.matched.length - 1]);
     }
   } else {
     // 未登录可以访问白名单页面

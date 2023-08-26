@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { getGroupListApi, groupDelApi } from "@/api/group";
-import GroupInfo from "@/components/GroupInfo/GroupInfo.vue";
+import { getNoticeApi, noticeDelApi } from "@/api/notice";
+import Notice from "@/components/Notice/Notice.vue";
 import { Action } from "element-plus";
 const dataForm = ref({});
 const dataList = ref([]);
@@ -10,7 +10,7 @@ const addOrUpdateVisible = ref(false);
 const pageIndex = ref(1);
 const pageSize = ref(10);
 const pageTotal = ref(0);
-const groupProps = ref();
+const noticeIdProps = ref();
 const titleProps = ref();
 const getDataList = async () => {
   dataListLoading.value = true;
@@ -20,7 +20,7 @@ const getDataList = async () => {
     // prodName: dataForm.value.prodName,
     // status: dataForm.value.status,
   };
-  const res = await getGroupListApi(data);
+  const res = await getNoticeApi(data);
   dataList.value = res.data.records;
   if (res.data.size) pageSize.value = res.data.size;
   if (res.data.total) pageTotal.value = res.data.total;
@@ -33,11 +33,11 @@ const addOrUpdateHandle = (val: any) => {
   // console.log(typeof val === "number");
   const is = typeof val === "number";
   if (is) {
-    groupProps.value = val;
+    noticeIdProps.value = val;
     titleProps.value = "修改分类";
   } else {
     titleProps.value = "新增分类";
-    groupProps.value = val;
+    noticeIdProps.value = val;
   }
   addOrUpdateVisible.value = true;
   console.log(11);
@@ -50,7 +50,7 @@ const deleteHandle = async (id) => {
     callback: async (action: Action) => {
       console.log(action);
       if (action === "confirm") {
-        const res = await groupDelApi([id]);
+        const res = await noticeDelApi([id]);
         console.log(res);
         if (res.success) {
           ElMessage({
@@ -126,17 +126,22 @@ onMounted(async () => {
         >
           <template #default="scope">
             <el-tag v-if="scope.row.status === 0" size="small" type="danger"
-              >下线</el-tag
+              >撤销</el-tag
             >
-            <el-tag v-else size="small">正常</el-tag>
+            <el-tag v-else size="small">公布</el-tag>
           </template>
         </el-table-column>
         <el-table-column
-          prop="seq"
+          prop="isTop"
           header-align="center"
           align="center"
-          label="排序号"
-        />
+          label="是否置顶"
+        >
+          <template #default="scope">
+            <el-tag v-if="scope.row.isTop === 0" size="small">否</el-tag>
+            <el-tag v-else size="small">是</el-tag>
+          </template>
+        </el-table-column>
         <el-table-column header-align="center" align="center" label="操作">
           <template #default="scope">
             <el-button
@@ -164,10 +169,10 @@ onMounted(async () => {
       :total="pageTotal"
     />
     <!-- 弹窗, 新增 / 修改 -->
-    <GroupInfo
+    <Notice
       v-if="addOrUpdateVisible"
       v-model="addOrUpdateVisible"
-      v-model:groupProps="groupProps"
+      v-model:noticeId="noticeIdProps"
       v-model:title="titleProps"
       @refreshDataList="handleRefreshDataList"
       ref="addOrUpdate"

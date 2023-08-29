@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getProdListApi } from "@/api/prod";
+import { getProdListApi, vipApi } from "@/api/prod";
 import ProdInfo from "@/components/Prod/ProdInfo.vue";
 const queryFormRef = ref(ElForm);
 
@@ -132,7 +132,6 @@ onMounted(async () => {
 });
 </script>
 <template>
-  <!-- {{ dialog.visible }} -->
   <div class="app-container">
     <div class="search-container">
       <el-form ref="queryFormRef" :inline="true">
@@ -156,21 +155,16 @@ onMounted(async () => {
             搜索
           </el-button>
           <el-button @click="resetQuery"> <i-ep-refresh />重置 </el-button>
-          <el-button @click="openDialog"> <i-ep-refresh />新增 </el-button>
         </el-form-item>
       </el-form>
     </div>
 
     <el-card>
       <template #header>
-        <el-button
-          v-hasPerm="['sys:dept:add']"
-          type="success"
-          @click="openDialog()"
+        <el-button type="success" @click="openDialog()"
           ><i-ep-plus />新增</el-button
         >
         <el-button
-          v-hasPerm="['sys:dept:delete']"
           type="danger"
           :disabled="ids.length === 0"
           @click="handleDelete()"

@@ -13,6 +13,8 @@ export const specificationManagement = () =>
   import("@/views/specificationManagement/index.vue");
 export const noticeManagement = () =>
   import("@/views/noticeManagement/index.vue");
+export const picsManagement = () => import("@/views/picsManagement/index.vue");
+export const vipManagement = () => import("@/views/vipManagement/index.vue");
 export const featureRoutes: RouteRecordRaw[] = [
   {
     path: "/prod",
@@ -58,17 +60,17 @@ export const featureRoutes: RouteRecordRaw[] = [
           keepAlive: true,
         },
       },
-      {
-        path: "comment",
-        component: commentManagement,
-        name: "comment",
-        meta: {
-          title: "评论管理",
-          icon: "tree",
-          hidden: false,
-          keepAlive: true,
-        },
-      },
+      // {
+      //   path: "comment",
+      //   component: commentManagement,
+      //   name: "comment",
+      //   meta: {
+      //     title: "评论管理",
+      //     icon: "tree",
+      //     hidden: false,
+      //     keepAlive: true,
+      //   },
+      // },
       {
         path: "spec",
         component: specificationManagement,
@@ -85,7 +87,7 @@ export const featureRoutes: RouteRecordRaw[] = [
   {
     path: "/mall",
     // component: prodManagement,
-    redirect: "/mall/notice",
+    redirect: "/mall",
     meta: {
       title: "门店管理",
       icon: "system",
@@ -105,17 +107,6 @@ export const featureRoutes: RouteRecordRaw[] = [
         },
       },
       {
-        path: "spot",
-        component: classifyManagement,
-        name: "spot",
-        meta: {
-          title: "自提点管理",
-          icon: "role",
-          hidden: false,
-          keepAlive: true,
-        },
-      },
-      {
         path: "fee",
         component: classifyManagement,
         name: "fee",
@@ -128,7 +119,7 @@ export const featureRoutes: RouteRecordRaw[] = [
       },
       {
         path: "pics",
-        component: groupManagement,
+        component: picsManagement,
         name: "pics",
         meta: {
           title: "轮播图管理",
@@ -137,13 +128,48 @@ export const featureRoutes: RouteRecordRaw[] = [
           keepAlive: true,
         },
       },
+    ],
+  },
+  {
+    path: "/vip",
+    redirect: "/vip",
+    meta: {
+      title: "会员管理",
+      icon: "system",
+      hidden: false,
+      keepAlive: true,
+    },
+    children: [
       {
-        path: "hot-search",
-        component: commentManagement,
-        name: "hot-search",
+        path: "vip",
+        component: vipManagement,
+        name: "vip",
         meta: {
-          title: "热搜管理",
-          icon: "tree",
+          title: "会员管理",
+          icon: "user",
+          hidden: false,
+          keepAlive: true,
+        },
+      },
+    ],
+  },
+  {
+    path: "/order",
+    redirect: "/order",
+    meta: {
+      title: "订单管理",
+      icon: "system",
+      hidden: false,
+      keepAlive: true,
+    },
+    children: [
+      {
+        path: "order",
+        component: noticeManagement,
+        name: "order",
+        meta: {
+          title: "订单管理",
+          icon: "user",
           hidden: false,
           keepAlive: true,
         },
@@ -187,58 +213,6 @@ export const constantRoutes: RouteRecordRaw[] = [
       },
     ].concat(featureRoutes),
   },
-
-  // 外部链接
-  // {
-  //   path: "/external-link",
-  //   component: Layout,
-  //   children: [ {
-  //       component: () => import("@/views/external-link/index.vue"),
-  //       path: "https://www.cnblogs.com/haoxianrui/",
-  //       meta: { title: "外部链接", icon: "link" },
-  //     },
-  //   ],
-  // },
-  // 多级嵌套路由
-  /* {
-         path: '/nested',
-         component: Layout,
-         redirect: '/nested/level1/level2',
-         name: 'Nested',
-         meta: {title: '多级菜单', icon: 'nested'},
-         children: [
-             {
-                 path: 'level1',
-                 component: () => import('@/views/nested/level1/index.vue'),
-                 name: 'Level1',
-                 meta: {title: '菜单一级'},
-                 redirect: '/nested/level1/level2',
-                 children: [
-                     {
-                         path: 'level2',
-                         component: () => import('@/views/nested/level1/level2/index.vue'),
-                         name: 'Level2',
-                         meta: {title: '菜单二级'},
-                         redirect: '/nested/level1/level2/level3',
-                         children: [
-                             {
-                                 path: 'level3-1',
-                                 component: () => import('@/views/nested/level1/level2/level3/index1.vue'),
-                                 name: 'Level3-1',
-                                 meta: {title: '菜单三级-1'}
-                             },
-                             {
-                                 path: 'level3-2',
-                                 component: () => import('@/views/nested/level1/level2/level3/index2.vue'),
-                                 name: 'Level3-2',
-                                 meta: {title: '菜单三级-2'}
-                             }
-                         ]
-                     }
-                 ]
-             },
-         ]
-     }*/
 ];
 
 /**

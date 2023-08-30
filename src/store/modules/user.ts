@@ -32,7 +32,6 @@ export const useUserStore = defineStore("user", () => {
           console.log(response);
 
           const { accessToken } = response.data;
-          console.log(response.data.userInfoInToken);
 
           token.value = accessToken; // Bearer eyJhbGciOiJIUzI1NiJ9.xxx.xxx
           console.log(token.value);

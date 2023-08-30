@@ -15,6 +15,8 @@ export const noticeManagement = () =>
   import("@/views/noticeManagement/index.vue");
 export const picsManagement = () => import("@/views/picsManagement/index.vue");
 export const vipManagement = () => import("@/views/vipManagement/index.vue");
+export const orderManagement = () =>
+  import("@/views/orderManagement/index.vue");
 export const featureRoutes: RouteRecordRaw[] = [
   {
     path: "/prod",
@@ -165,7 +167,7 @@ export const featureRoutes: RouteRecordRaw[] = [
     children: [
       {
         path: "order",
-        component: noticeManagement,
+        component: orderManagement,
         name: "order",
         meta: {
           title: "订单管理",

@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import OrderInfo from "@/components/Order/OrderInfo.vue";
+import { getOrderApi } from "@/api/order";
 import { ref } from "vue";
-
+const orderNumberProps = ref();
 const dataForm = ref({});
-const dataRange = ref([]);
-const options = [
+const dateRange = ref([]);
+const options = ref([
   {
     value: 1,
     label: "待付款",
@@ -28,7 +30,7 @@ const options = [
     value: 6,
     label: "失败",
   },
-];
+]);
 const resourcesUrl = "https://img.mall4j.com/";
 const dataList = ref([]);
 const page = ref({
@@ -40,14 +42,41 @@ const dataListLoading = ref(false);
 const dataListSelections = ref([]);
 const addOrUpdateVisible = ref(false);
 const consignmentInfoVisible = ref(false);
+
+const getDataList = async () => {
+  const data = {
+    current: page.value.currentPage,
+    size: page.value.pageSize,
+    orderNumber: dataForm.value.orderNumber,
+    status: dataForm.value.status,
+    startTime: dateRange.value === null ? null : dateRange.value[0], // 开始时间
+    endTime: dateRange.value === null ? null : dateRange.value[1], // 结束时间
+  };
+  const res = await getOrderApi(data);
+  dataList.value = res.data.records;
+  console.log(res);
+  console.log();
+};
+
+const addOrUpdateHandle = (val) => {
+  console.log(val);
+  orderNumberProps.value = val;
+  addOrUpdateVisible.value = true;
+};
+const sizeChangeHandle = () => {};
+const currentChangeHandle = () => {};
+onMounted(async () => {
+  await getDataList();
+});
 </script>
 
 <template>
   <div class="mod-order-order">
+    {{ addOrUpdateVisible }}
     <el-form
       :inline="true"
       :model="dataForm"
-      @keyup.enter.native="getDataList(page)"
+      @keyup.enter.native="getDataList()"
     >
       <el-form-item label="订单编号:">
         <el-input
@@ -67,20 +96,18 @@ const consignmentInfoVisible = ref(false);
         />
       </el-form-item>
       <el-form-item label="订单状态:">
-        <template>
-          <el-select
-            v-model="dataForm.status"
-            clearable
-            placeholder="请选择订单状态"
-          >
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
-          </el-select>
-        </template>
+        <el-select
+          v-model="dataForm.status"
+          clearable
+          placeholder="请选择订单状态"
+        >
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
+        </el-select>
       </el-form-item>
       <el-form-item>
         <el-button
@@ -90,7 +117,7 @@ const consignmentInfoVisible = ref(false);
           @click="getDataList()"
           >查询</el-button
         >
-        <el-button
+        <!-- <el-button
           v-if="isAuth('order:order:waitingConsignmentExcel')"
           @click="showConsignmentInfo()"
           type="primary"
@@ -103,7 +130,7 @@ const consignmentInfoVisible = ref(false);
           type="primary"
           size="small"
           >导出销售记录</el-button
-        >
+        > -->
         <el-button @click="clearDatas()" size="small">清空</el-button>
       </el-form-item>
     </el-form>
@@ -121,6 +148,7 @@ const consignmentInfoVisible = ref(false);
             <el-col :span="2"><span class="item">操作</span></el-col>
           </el-row>
         </div>
+
         <div class="prod" v-for="order in dataList" :key="order.orderId">
           <div class="prod-tit">
             <span>订单编号：{{ order.orderNumber }}</span>
@@ -138,8 +166,10 @@ const consignmentInfoVisible = ref(false);
                     :key="orderItem.orderItemId"
                   >
                     <div class="prod-image">
-                      <img :src="resourcesUrl + orderItem.pic" style="height:
-                      100px; width: 100px" //>
+                      <img
+                        :src="resourcesUrl + orderItem.pic"
+                        style="height: 100px; width: 100px"
+                      />
                     </div>
                     <div class="prod-name">
                       <span>{{ orderItem.prodName }}</span>
@@ -209,7 +239,6 @@ const consignmentInfoVisible = ref(false);
                   <div class="operate">
                     <!-- <button onclick="">打印订单</button><br> -->
                     <el-button
-                      v-if="isAuth('order:order:update')"
                       type="text"
                       size="small"
                       @click="addOrUpdateHandle(order.orderNumber)"
@@ -240,15 +269,144 @@ const consignmentInfoVisible = ref(false);
       layout="total, sizes, prev, pager, next, jumper"
     />
     <!-- 弹窗, 新增 / 修改 -->
-    <add-or-update
+
+    <OrderInfo
       v-if="addOrUpdateVisible"
+      v-model="addOrUpdateVisible"
+      v-model:orderNumber="orderNumberProps"
       ref="addOrUpdate"
       @refreshDataList="getDataList"
     />
-    <consignment-info
+    <!-- <consignment-info
       v-if="consignmentInfoVisible"
       ref="consignmentInfo"
       @inputCallback="getWaitingConsignmentExcel"
-    />
+    /> -->
   </div>
 </template>
+
+<style lang="scss">
+.mod-order-order {
+  .tit {
+    display: flex;
+    height: 45px;
+    align-items: center;
+  }
+  .tit .item {
+    padding: 0 10px;
+    width: 10%;
+    text-align: center;
+  }
+  .tit .product {
+    width: 25%;
+  }
+  .prod-tit {
+    padding: 10px;
+    background: #f8f8f9;
+    border-left: 1px solid #dddee1;
+    border-top: 1px solid #dddee1;
+    border-right: 1px solid #dddee1;
+  }
+  .prod-tit span {
+    margin-right: 15px;
+  }
+  .prod-cont {
+    display: flex;
+    border-top: 1px solid #dddee1;
+    border-bottom: 1px solid #dddee1;
+    border-left: 1px solid #dddee1;
+    color: #495060;
+  }
+  .prod-cont .item {
+    display: flex;
+    display: -webkit-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    // width: 10%;
+    border-right: 1px solid #dddee1;
+    text-align: center;
+    height: 100%;
+  }
+  .prod-cont .item span {
+    display: block;
+  }
+  .prod-cont .prod-item {
+    // width: 38%;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #dddee1;
+  }
+  .prod-name {
+    width: 55%;
+    text-align: left;
+  }
+  .prod-price {
+    position: absolute;
+    right: 40px;
+    text-align: right;
+  }
+  .prod-price span {
+    display: block;
+    margin-bottom: 10px;
+  }
+  .prod-name .prod-info {
+    display: block;
+    color: #80848f;
+    margin-top: 30px;
+  }
+  .prod-cont .items.name {
+    display: flex;
+    position: relative;
+    padding: 20px;
+    // height: 100px;
+    border-bottom: 1px solid #dddee1;
+  }
+  .prod-cont .items.name:last-child {
+    border-bottom: none;
+  }
+  .prod-image {
+    margin-right: 20px;
+    width: 100px;
+    height: 100px;
+  }
+  .prod-image img {
+    width: 100px;
+    height: 100px;
+  }
+  .item span {
+    display: block;
+    margin-bottom: 10px;
+  }
+  .item .operate {
+    color: #2d8cf0;
+  }
+  .item .totalprice {
+    color: #c00;
+  }
+  .prod .remark {
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    background-color: #e8f7f6;
+    border-left: 1px solid #dddee1;
+    border-right: 1px solid #dddee1;
+    border-bottom: 1px solid #dddee1;
+    margin-bottom: 20px;
+  }
+  .buyer-remark {
+    padding: 0 20px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .empty-tips {
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin: 50px 0;
+    color: #999;
+  }
+}
+</style>

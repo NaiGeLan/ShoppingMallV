@@ -20,3 +20,18 @@ export function getOrderInfoApi(orderNumber: any) {
     method: "get",
   });
 }
+
+export function getDeliverListApi() {
+  return request({
+    url: "/admin/delivery/list",
+    method: "get",
+  });
+}
+
+export function deliverListApi(data: any) {
+  return request({
+    url: "/order/order/delivery",
+    method: "put",
+    data,
+  });
+}

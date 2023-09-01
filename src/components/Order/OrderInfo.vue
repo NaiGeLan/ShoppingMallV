@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { getOrderInfoApi } from "@/api/order";
 import { ref, onBeforeUnmount, watch, computed } from "vue";
+import OrderDevy from "./OrderDevy.vue";
 
-const visible = ref(false);
 const dataForm = ref({
   orderId: 0,
   orderNumber: "",
@@ -23,9 +23,10 @@ const dataForm = ref({
   orderType: 1,
 });
 
+const orderIdProps = ref();
 const userAddrOrder = ref({});
 const resourcesUrl = "https://img.mall4j.com/";
-const addOrUpdateVisible = ref(false);
+
 const devyVisible = ref(false);
 const props = defineProps({
   orderNumber: {
@@ -50,50 +51,28 @@ const stepsStatus = computed(() => {
 
 const dataFormSubmit = () => {};
 
+const orderItems = ref([]);
 const getDataList = async () => {
-  // orderId: 0,
-  // orderNumber: "",
-  // remarks: "",
-  // total: 0,
-  // actualTotal: 0,
-  // dvyType: "",
-  // status: 1,
-  // addrOrderId: 0,
-  // nickName: "",
-  // orderItems: [],
-  // orderTime: "",
-  // updateTime: "",
-  // payTime: "",
-  // dvyTime: "",
-  // finallyTime: "",
-  // cancelTime: "",
-  // userAddrOrder: {},
   const res = await getOrderInfoApi(dataForm.value.orderNumber);
   dataForm.value = res.data;
-  // dataForm.value.orderId = res.data.orderId;
-  // dataForm.value.orderNumber = res.data.orderNumber;
-  // dataForm.value.remarks = res.data.remarks;
-  // dataForm.value.total = res.data.total;
-  // dataForm.value.actualTotal = res.data.actualTotal;
-  // dataForm.value.dvyType = res.data.dvyType;
-  // dataForm.value.status = res.data.status;
-  // dataForm.value.addrOrderId = res.data.addrOrderId;
-  // dataForm.value.nickName = res.data.nickName;
-  // dataForm.value.orderItems = res.data.orderItems;
-  // dataForm.value.orderTime = res.data.orderTime;
-  // dataForm.value.updateTime = res.data.updateTime;
-  // dataForm.value.payTime = res.data.payTime;
-  // dataForm.value.dvyTime = res.data.dvyTime;
-  // dataForm.value.finallyTime = res.data.finallyTime;
-  // dataForm.value.cancelTime = res.data.cancelTime;
-  // dataForm.value.orderType = res.data.orderType;
+  orderItems.value = res.data.orderItems;
   userAddrOrder.value = res.data.userAddrOrder;
   console.log(dataForm.value);
 };
 
+const changeOrder = async () => {
+  devyVisible.value = true;
+  orderIdProps.value = dataForm.value.orderNumber;
+};
+
+const handlerefreshDataList = async () => {
+  await getDataList();
+  devyVisible.value = false;
+};
 onMounted(async () => {
   console.log(props);
-  dataForm.value.orderNumber = props.orderNumber;
+  if (props.orderNumber) dataForm.value.orderNumber = props.orderNumber;
+
   await getDataList();
 });
 </script>
@@ -106,7 +85,6 @@ onMounted(async () => {
   >
     <el-form
       :model="dataForm"
-      ref="dataForm"
       @keyup.enter.native="dataFormSubmit()"
       label-width="80px"
     >
@@ -186,7 +164,7 @@ onMounted(async () => {
                       type="primary"
                       v-if="dataForm.status === 2 && dataForm.orderType !== 1"
                       plain
-                      @click="changeOrder(dataForm.orderNumber)"
+                      @click="changeOrder()"
                       >发货</el-button
                     >
                     <!-- <el-button type="info" plain>打印</el-button> -->
@@ -262,8 +240,7 @@ onMounted(async () => {
                 </div>
               </div>
               <div class="item-list">
-                {{ dataForm.orderItems }}
-                <el-table :data="dataForm.orderItems" border>
+                <el-table :data="orderItems" border>
                   <el-table-column prop="" label="商品">
                     <template #default="scope">
                       <div class="prod-con">
@@ -377,7 +354,12 @@ onMounted(async () => {
     </el-form>
     <!-- 弹窗, 新增 / 修改 -->
     <!-- <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update> -->
-    <!-- <devy-add v-if="devyVisible" ref="devyAdd" @refreshDataList="getDataList" /> -->
+    <OrderDevy
+      v-if="devyVisible"
+      v-model="devyVisible"
+      v-model:orderId="orderIdProps"
+      @refreshDataList="handlerefreshDataList"
+    />
   </el-dialog>
 </template>
 <style>

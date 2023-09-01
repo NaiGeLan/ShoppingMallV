@@ -84,7 +84,6 @@ const adornUrl = (actionName: any) => {
 </script>
 
 <template>
-  <!-- {{ props }} -->
   <div>
     <el-upload
       :action="adornUrl('/admin/file/upload/element')"

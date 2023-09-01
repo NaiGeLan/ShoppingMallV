@@ -42,7 +42,6 @@ watch(
         :collapse-transition="false"
         :mode="layout === 'top' ? 'horizontal' : 'vertical'"
       >
-        <!-- {{ constantRoutes }} -->
         <sidebar-item
           v-for="route in featureRoutes"
           :key="route.path"

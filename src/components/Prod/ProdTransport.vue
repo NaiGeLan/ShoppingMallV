@@ -74,7 +74,6 @@ onMounted(async () => {
 </script>
 
 <template>
-  <!-- {{ props }} -->
   <div class="mod-prod-prod-transport">
     <el-form-item
       label="运费设置"

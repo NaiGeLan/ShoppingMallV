@@ -72,7 +72,6 @@ onMounted(async () => {
 
 <template>
   <div class="mod-order-order">
-    {{ addOrUpdateVisible }}
     <el-form
       :inline="true"
       :model="dataForm"

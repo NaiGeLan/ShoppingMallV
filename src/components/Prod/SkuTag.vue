@@ -1,6 +1,5 @@
 <template>
   <div class="mod-prod-sku-tag">
-    <!-- {{ props }} -->
     <el-form-item label="商品规格">
       <el-button size="mini" @click="shopTagInput()">添加规格</el-button>
       <el-divider />

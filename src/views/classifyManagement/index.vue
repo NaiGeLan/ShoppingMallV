@@ -59,7 +59,6 @@ onMounted(async () => {
 
 <template>
   <div class="mod-category">
-    {{ addOrUpdateVisible }}
     <div class="search-container">
       <el-form :inline="true" :model="dataForm">
         <el-form-item>

@@ -87,8 +87,6 @@ onMounted(async () => {
 
 <template>
   <el-dialog :title="props.title" :close-on-click-modal="false">
-    {{ props }}
-    {{ dataForm }}
     <el-form
       ref="formRef"
       @keyup.enter.native="dataFormSubmit()"

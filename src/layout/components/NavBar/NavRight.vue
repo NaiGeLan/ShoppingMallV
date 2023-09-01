@@ -10,7 +10,7 @@
       <size-select class="setting-item" />
     </el-tooltip>
     <!--语言选择-->
-    <lang-select class="setting-item" />
+    <!-- <lang-select class="setting-item" /> -->
   </div>
 
   <!-- 用户头像 -->

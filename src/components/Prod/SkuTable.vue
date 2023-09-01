@@ -50,7 +50,6 @@ onMounted(async () => {
 </script>
 
 <template>
-  <!-- {{ props }} -->
   <div class="mod-prod-sku-table">
     <el-form-item>
       <el-table

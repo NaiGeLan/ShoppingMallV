@@ -127,8 +127,6 @@ onMounted(async () => {
 
 <template>
   <el-dialog :title="props.title" :close-on-click-modal="false">
-    {{ props }}
-    {{ dataForm }}
     <el-table :data="dataForm" border style="width: 100%">
       <el-table-column
         prop="propName"

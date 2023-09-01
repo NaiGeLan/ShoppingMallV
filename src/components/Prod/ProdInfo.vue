@@ -155,10 +155,7 @@ console.log(props);
 
 <template>
   <el-dialog :title="props.title" width="600px" @closed="closeDialog">
-    <!-- {{ infoForm }} -->
     <el-form ref="prodFormRef" :model="prodFormRef" label-width="100px">
-      <!-- {{ infoForm }} -->
-      <!-- {{ props }} -->
       <el-form-item label="产品图片">
         <MulPicUpload :imgs="infoForm.imgs" />
       </el-form-item>
@@ -216,7 +213,6 @@ console.log(props);
           />
         </el-col>
       </el-form-item>
-      <!-- {{ infoForm.deliveryMode }} -->
       <el-form-item label="配送方式">
         <el-radio-group v-model="infoForm.deliveryMode">
           <el-radio :label="'ShopDelivery'">商家配送</el-radio>
@@ -234,7 +230,7 @@ console.log(props);
         :skuListProps="infoForm.skuList"
         @change="skuTagChangeSkuHandler"
       />
-      <!-- {{ infoForm.skuList }} -->
+
       <sku-table
         ref="skuTable"
         v-model:skuList="infoForm.skuList"

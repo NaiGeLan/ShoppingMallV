@@ -1,6 +1,5 @@
 <template>
   <div>
-    {{ props }}
     <div style="border: 1px solid #ccc; margin-top: 10px">
       <Toolbar
         :editor="editorRef"

@@ -23,7 +23,7 @@ export const featureRoutes: RouteRecordRaw[] = [
     // component: prodManagement,
     redirect: "/prod/prod",
     meta: {
-      title: "产品管理",
+      title: "商品管理",
       icon: "system",
       hidden: false,
       keepAlive: true,
@@ -34,7 +34,7 @@ export const featureRoutes: RouteRecordRaw[] = [
         component: prodManagement,
         name: "prod",
         meta: {
-          title: "产品管理",
+          title: "商品管理",
           icon: "user",
           hidden: false,
           keepAlive: true,

@@ -55,8 +55,6 @@ onMounted(async () => {
 
 <template>
   <el-dialog title="编辑用户" :close-on-click-modal="false">
-    {{ props }}
-    {{ dataForm }}
     <el-form
       ref="formRef"
       @keyup.enter.native="dataFormSubmit()"

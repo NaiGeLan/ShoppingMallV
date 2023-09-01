@@ -38,15 +38,21 @@ import { onBeforeUnmount, ref, shallowRef, onMounted } from "vue";
 import { Editor, Toolbar } from "@wangeditor/editor-for-vue";
 
 const emit = defineEmits("handleChange");
-const props = defineProps(["info"]);
+const props = defineProps({
+  info: {
+    required: false,
+    type: String,
+  },
+});
 const editorRef = shallowRef();
 
 // 内容 HTML
 const valueHtml = ref("<p></p>");
 
 onMounted(() => {
-  console.log(props.info?.content);
+  console.log(JSON.parse(JSON.stringify(props)));
   valueHtml.value = props.info;
+  console.log();
 });
 
 const toolbarConfig = {};
@@ -54,7 +60,7 @@ const editorConfig = { placeholder: "请输入内容..." };
 
 // 组件销毁时，也及时销毁编辑器，重要！
 onBeforeUnmount(() => {
-  console.log(props);
+  console.log(JSON.parse(JSON.stringify(props)));
   const editor = editorRef.value;
   if (editor == null) return;
 
@@ -63,6 +69,8 @@ onBeforeUnmount(() => {
 
 // 编辑器回调函数
 const handleCreated = (editor) => {
+  console.log(JSON.parse(JSON.stringify(props)));
+  valueHtml.value = props.info;
   console.log("created", editor);
   editorRef.value = editor; // 记录 editor 实例，重要！
 };

@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { useUserStore } from "@/store/modules/user";
 import { useTransition, TransitionPresets } from "@vueuse/core";
-
+import { getVipsApi } from "@/api/vip";
+import { getProdListApi } from "@/api/prod";
+import { getOrderApi } from "@/api/order";
 defineOptions({
   // eslint-disable-next-line
   name: "Dashboard",
@@ -29,37 +31,42 @@ const greetings = computed(() => {
 
 const duration = 5000;
 
-// 收入金额
-const amount = ref(0);
-const amountOutput = useTransition(amount, {
-  duration: duration,
-  transition: TransitionPresets.easeOutExpo,
+onMounted(async () => {
+  await getUserCount();
+  await getProdCount();
+  await getOrderCount();
 });
-amount.value = 2000;
+const userCount = ref(0);
+const getUserCount = async () => {
+  const data = {
+    current: 1,
+    size: 10,
+  };
+  const res = await getVipsApi(data);
+  console.log(res);
+  userCount.value = res.data.total;
+};
 
-// 访问数
-const visitCount = ref(0);
-const visitCountOutput = useTransition(visitCount, {
-  duration: duration,
-  transition: TransitionPresets.easeOutExpo,
-});
-visitCount.value = 2000;
-
-//消息数
-const messageCount = ref(0);
-const messageCountOutput = useTransition(messageCount, {
-  duration: duration,
-  transition: TransitionPresets.easeOutExpo,
-});
-messageCount.value = 2000;
+const prodCount = ref(0);
+const getProdCount = async () => {
+  const data = {
+    current: 1,
+    size: 10,
+  };
+  const res = await getProdListApi(data);
+  prodCount.value = res.data.total;
+};
 
 // 订单数
 const orderCount = ref(0);
-const orderCountOutput = useTransition(orderCount, {
-  duration: duration,
-  transition: TransitionPresets.easeOutExpo,
-});
-orderCount.value = 2000;
+const getOrderCount = async () => {
+  const data = {
+    current: 1,
+    size: 10,
+  };
+  const res = await getOrderApi(data);
+  orderCount.value = res.data.total;
+};
 </script>
 
 <template>
@@ -86,24 +93,11 @@ orderCount.value = 2000;
           </div>
 
           <div class="space-x-2 flex items-center justify-end">
-            <el-link
-              target="_blank"
-              type="danger"
-              href="https://blog.csdn.net/u013737132/article/details/130191394"
-              >💥官方从零到一文档</el-link
-            >
-            <el-divider direction="vertical" />
-            <el-link
-              target="_blank"
-              type="success"
-              href="https://gitee.com/youlaiorg"
-              >Gitee</el-link
-            >
             <el-divider direction="vertical" />
             <el-link
               target="_blank"
               type="primary"
-              href="https://github.com/youlaitech"
+              href="https://github.com/NaiGeLanF"
               >GitHub
             </el-link>
           </div>
@@ -121,9 +115,9 @@ orderCount.value = 2000;
             <svg-icon icon-class="uv" size="3em" />
           </div>
           <div class="flex flex-col space-y-3">
-            <div class="text-[var(--el-text-color-secondary)]">访问数</div>
+            <div class="text-[var(--el-text-color-secondary)]">用户人数</div>
             <div class="text-lg text-right">
-              {{ Math.round(visitCountOutput) }}
+              {{ Math.round(userCount) }}
             </div>
           </div>
         </div>
@@ -138,9 +132,9 @@ orderCount.value = 2000;
             <svg-icon icon-class="message" size="3em" />
           </div>
           <div class="flex flex-col space-y-3">
-            <div class="text-[var(--el-text-color-secondary)]">消息数</div>
+            <div class="text-[var(--el-text-color-secondary)]">在线统计</div>
             <div class="text-lg text-right">
-              {{ Math.round(messageCountOutput) }}
+              {{ Math.round(userCount) }}
             </div>
           </div>
         </div>
@@ -154,9 +148,9 @@ orderCount.value = 2000;
             <svg-icon icon-class="money" size="3em" />
           </div>
           <div class="flex flex-col space-y-3">
-            <div class="text-[var(--el-text-color-secondary)]">收入金额</div>
+            <div class="text-[var(--el-text-color-secondary)]">商品数量</div>
             <div class="text-lg text-right">
-              {{ Math.round(amountOutput) }}
+              {{ Math.round(prodCount) }}
             </div>
           </div>
         </div>
@@ -171,7 +165,7 @@ orderCount.value = 2000;
           <div class="flex flex-col space-y-3">
             <div class="text-[var(--el-text-color-secondary)]">订单数</div>
             <div class="text-lg text-right">
-              {{ Math.round(orderCountOutput) }}
+              {{ Math.round(orderCount) }}
             </div>
           </div>
         </div>
@@ -180,32 +174,14 @@ orderCount.value = 2000;
 
     <!-- Echarts 图表 -->
     <el-row :gutter="40">
-      <el-col :sm="24" :lg="8" class="mb-4">
+      <!-- <el-col :sm="24" :lg="8" class="mb-4">
         <BarChart
           id="barChart"
           height="400px"
           width="100%"
           class="bg-[var(--el-bg-color-overlay)]"
         />
-      </el-col>
-
-      <el-col :xs="24" :sm="12" :lg="8" class="mb-4">
-        <PieChart
-          id="pieChart"
-          height="400px"
-          width="100%"
-          class="bg-[var(--el-bg-color-overlay)]"
-        />
-      </el-col>
-
-      <el-col :xs="24" :sm="12" :lg="8" class="mb-4">
-        <RadarChart
-          id="radarChart"
-          height="400px"
-          width="100%"
-          class="bg-[var(--el-bg-color-overlay)]"
-        />
-      </el-col>
+      </el-col> -->
     </el-row>
   </div>
 </template>

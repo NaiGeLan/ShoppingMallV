@@ -3,6 +3,7 @@ import SkuTag from "@/components/Prod/SkuTag.vue";
 import SkuTable from "@/components/Prod/SkuTable.vue";
 import ProdTransport from "@/components/Prod/ProdTransport.vue";
 import MulPicUpload from "./mul-pic-upload.vue";
+import HtmlEditor from "../HtmlEditor/HtmlEditor.vue";
 import { treeDataTranslate } from "@/utils/";
 import {
   getProdListApi,
@@ -241,17 +242,18 @@ console.log(props);
       />
 
       <el-form-item label="产品详情" prop="content">
-        <el-input
+        <HtmlEditor
+          v-model:info="infoForm.content"
+          @handleChange="handleContentChange"
+        />
+        <!-- <el-input
           v-model="infoForm.content"
           ref="content"
           maxlength="30"
           placeholder="Please input"
           show-word-limit
           type="textarea"
-        />
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="dataFormSubmit()">确定</el-button>
+        /> -->
       </el-form-item>
     </el-form>
 

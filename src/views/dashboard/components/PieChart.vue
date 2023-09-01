@@ -8,7 +8,7 @@
 
 <script setup lang="ts">
 import * as echarts from "echarts";
-
+import { getCategoryListApi } from "@/api/category";
 const props = defineProps({
   id: {
     type: String,
@@ -29,7 +29,7 @@ const props = defineProps({
     required: true,
   },
 });
-const options = {
+const options = ref({
   grid: {
     left: "2%",
     right: "2%",
@@ -57,21 +57,33 @@ const options = {
           return colorList[params.dataIndex];
         },
       },
-      data: [
-        { value: 26, name: "家用电器" },
-        { value: 27, name: "户外运动" },
-        { value: 24, name: "汽车用品" },
-        { value: 23, name: "手机数码" },
-      ],
+      data: [],
     },
   ],
-};
+});
 
-onMounted(() => {
+const getCategoryList = async () => {
+  const data = {
+    current: 1,
+    size: 10,
+  };
+  const res = await getCategoryListApi(data);
+  console.log(res);
+  const cateList: any[] = [];
+  res.data.forEach((item) => {
+    // console.log(item);
+    cateList.push({ name: item.categoryName, value: 20 });
+  });
+  console.log(cateList);
+  options.value.series.data = cateList;
+  console.log(options.value);
+};
+onMounted(async () => {
+  await getCategoryList();
   const chart = echarts.init(
     document.getElementById(props.id) as HTMLDivElement
   );
-  chart.setOption(options);
+  chart.setOption(options.value);
   window.addEventListener("resize", () => {
     chart.resize();
   });

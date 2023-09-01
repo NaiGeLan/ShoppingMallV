@@ -39,3 +39,13 @@ export function getListCategoryApi() {
     method: "get",
   });
 }
+
+export function categoryApi(method: any, data: any) {
+  // console.log(data);
+
+  return request({
+    url: "/prod/category",
+    method: method,
+    data,
+  });
+}

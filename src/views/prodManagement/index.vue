@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getProdListApi, vipApi } from "@/api/prod";
+import { getProdListApi } from "@/api/prod";
 import ProdInfo from "@/components/Prod/ProdInfo.vue";
 const queryFormRef = ref(ElForm);
 
@@ -19,6 +19,10 @@ const dataForm = ref({
   status: "",
 });
 
+const handleContentChange = (val) => {
+  console.log(val);
+  dataForm.value.content = val;
+};
 const prodList = ref([]);
 /** 查询 */
 async function handleQuery() {
@@ -76,12 +80,10 @@ async function addOrUpdateHandle(row: any) {
  *
  */
 async function openDialog(row?: any) {
-  console.log(row.prodId);
-  prodData.value = row.prodId;
-  dialog.visible = true;
+  prodData.value = row?.prodId;
 
   // await getProdInfo(row.prodId);
-  if (row.prodId) {
+  if (row?.prodId) {
     dialog.title = "修改产品";
     // getDeptForm(deptId).then(({ data }) => {
     //   Object.assign(formData, data);
@@ -90,6 +92,7 @@ async function openDialog(row?: any) {
     dialog.title = "新增产品";
     // formData.parentId = parentId ?? 0;
   }
+  dialog.visible = true;
 }
 
 /** 删除部门 */

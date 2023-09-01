@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { getCategoryInfoApi, getListCategoryApi } from "@/api/category";
+import {
+  getCategoryInfoApi,
+  getListCategoryApi,
+  categoryApi,
+} from "@/api/category";
 import { treeDataTranslate } from "@/utils";
 const adornUrl = (actionName: any) => {
   // 非生产环境 && 开启代理, 接口前缀统一使用[/proxyApi/]前缀做代理拦截!
@@ -8,9 +12,21 @@ const adornUrl = (actionName: any) => {
 };
 const dialogImageUrl = ref("");
 const dataFormSubmit = async () => {
-  console.log(formRef.value);
+  const method = dataForm.value.categoryId ? "put" : "post";
+  const res = await categoryApi(method, dataForm.value);
+  console.log(res);
+  if (res.success) {
+    console.log("success");
 
-  console.log(await formRef.value.validate());
+    ElMessage({
+      message: dataForm.value[0].propId ? "修改成功" : "新增成功",
+      type: "success",
+    });
+    emit("refreshDataList");
+  }
+  console.log(dataForm.value);
+
+  // console.log(await formRef.value.validate());
 };
 const props = defineProps({
   categoryId: {
@@ -34,32 +50,6 @@ const dataForm = ref({
   pic: "",
 });
 const imageList = ref([]);
-const rules = reactive({
-  categoryName: [
-    { required: true, message: "请输入分类名称", trigger: "blur" },
-  ],
-  parentCategory: [
-    {
-      required: false,
-      message: "请输入上级名称",
-      trigger: "change",
-    },
-  ],
-  seq: [
-    {
-      required: true,
-      message: "请输入排序号",
-      trigger: "change",
-    },
-  ],
-  status: [
-    {
-      required: true,
-      message: "请选择状态",
-      trigger: "change",
-    },
-  ],
-});
 
 const categoryList = ref([]);
 const selectedCategory = ref([]);
@@ -93,7 +83,6 @@ const getCategoryList = async () => {
   categoryList.value = treeDataTranslate(res.data, "categoryId", "parentId");
 };
 onMounted(async () => {
-  // JSON.parse(JSON.stringify(props));
   categoryIdProps.value = JSON.parse(JSON.stringify(props)).categoryId;
   console.log(props.title);
   if (props.title === "修改分类") await getCategoryInfo();
@@ -113,17 +102,19 @@ onMounted(async () => {
       :rules="rules"
     >
       <el-form-item v-if="dataForm.type !== 2" label="分类图片" prop="pic">
-        <pic-upload v-model="dataForm.pic" />
-        <el-upload
+        <!-- <pic-upload v-model="dataForm.pic" /> -->
+        <!-- <el-upload
           :action="adornUrl('/admin/file/upload/element')"
           list-type="picture-card"
           :file-list="imageList"
         >
           <i class="el-icon-plus"></i>
-        </el-upload>
-        <el-dialog>
+        </el-upload> -->
+        <!-- <el-dialog>
           <img width="100%" :src="dialogImageUrl" alt="" />
-        </el-dialog>
+        </el-dialog> -->
+
+        <MulPicUpload :imgs="dialogImageUrl" />
       </el-form-item>
       <el-form-item
         v-if="dataForm.type !== 2"

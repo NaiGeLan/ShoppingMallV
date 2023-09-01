@@ -18,7 +18,7 @@ const dataFormSubmit = async () => {
     console.log("success");
 
     ElMessage({
-      message: dataForm.value[0].propId ? "修改成功" : "新增成功",
+      message: dataForm.value.id ? "修改成功" : "新增成功",
       type: "success",
     });
     emit("refreshDataList");
@@ -59,11 +59,11 @@ const getCategoryInfo = async () => {
   console.log(res);
   console.log(dataForm.value);
 
-  // dataForm.value.categoryId = res.data.categoryId;
-  // dataForm.value.grade = res.data.grade;
-  // dataForm.value.categoryName = res.data.categoryName;
-  // dataForm.value.seq = res.data.seq;
-  // dataForm.value.status = res.data.status;
+  dataForm.value.title = res.data.title;
+  dataForm.value.status = res.data.status;
+  dataForm.value.style = res.data.style;
+  dataForm.value.seq = res.data.seq;
+  dataForm.value.id = res.data.id;
   // dataForm.value.parentId = res.data.parentId;
   // dataForm.value.pic = res.data.pic;
   // dialogImageUrl.value = res.data.pic;
@@ -94,7 +94,7 @@ onMounted(async () => {
     >
       <el-form-item label="分类名称" prop="categoryName">
         <el-input
-          v-model="dataForm.categoryName"
+          v-model="dataForm.title"
           controls-position="right"
           :min="0"
           label="标签名称"

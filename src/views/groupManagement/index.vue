@@ -166,7 +166,7 @@ onMounted(async () => {
     <GroupInfo
       v-if="addOrUpdateVisible"
       v-model="addOrUpdateVisible"
-      v-model:groupProps="groupProps"
+      v-model:groupId="groupProps"
       v-model:title="titleProps"
       @refreshDataList="handleRefreshDataList"
       ref="addOrUpdate"

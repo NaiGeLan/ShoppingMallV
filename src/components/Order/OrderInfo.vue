@@ -20,7 +20,7 @@ const dataForm = ref({
   dvyTime: "",
   finallyTime: "",
   cancelTime: "",
-  orderType: "",
+  orderType: 1,
 });
 
 const userAddrOrder = ref({});
@@ -32,6 +32,7 @@ const props = defineProps({
     type: String,
   },
 });
+// eslint-disable-next-line vue/return-in-computed-property
 const stepsStatus = computed(() => {
   if (dataForm.value.finallyTime) {
     return 4;

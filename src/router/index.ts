@@ -108,17 +108,17 @@ export const featureRoutes: RouteRecordRaw[] = [
           keepAlive: true,
         },
       },
-      {
-        path: "fee",
-        component: classifyManagement,
-        name: "fee",
-        meta: {
-          title: "运费模版",
-          icon: "role",
-          hidden: false,
-          keepAlive: true,
-        },
-      },
+      // {
+      //   path: "fee",
+      //   component: classifyManagement,
+      //   name: "fee",
+      //   meta: {
+      //     title: "运费模版",
+      //     icon: "role",
+      //     hidden: false,
+      //     keepAlive: true,
+      //   },
+      // },
       {
         path: "pics",
         component: picsManagement,

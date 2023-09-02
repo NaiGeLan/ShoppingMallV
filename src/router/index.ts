@@ -62,17 +62,7 @@ export const featureRoutes: RouteRecordRaw[] = [
           keepAlive: true,
         },
       },
-      // {
-      //   path: "comment",
-      //   component: commentManagement,
-      //   name: "comment",
-      //   meta: {
-      //     title: "评论管理",
-      //     icon: "tree",
-      //     hidden: false,
-      //     keepAlive: true,
-      //   },
-      // },
+
       {
         path: "spec",
         component: specificationManagement,
@@ -108,17 +98,6 @@ export const featureRoutes: RouteRecordRaw[] = [
           keepAlive: true,
         },
       },
-      // {
-      //   path: "fee",
-      //   component: classifyManagement,
-      //   name: "fee",
-      //   meta: {
-      //     title: "运费模版",
-      //     icon: "role",
-      //     hidden: false,
-      //     keepAlive: true,
-      //   },
-      // },
       {
         path: "pics",
         component: picsManagement,

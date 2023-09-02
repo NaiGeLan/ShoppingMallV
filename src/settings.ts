@@ -42,7 +42,7 @@ interface DefaultSettings {
 }
 
 const defaultSettings: DefaultSettings = {
-  title: "vue3-element-admin",
+  title: "NaiGeLan-Admin",
   showSettings: true,
   tagsView: true,
   fixedHeader: false,

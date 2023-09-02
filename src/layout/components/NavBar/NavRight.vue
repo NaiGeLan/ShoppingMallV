@@ -26,7 +26,7 @@
         </router-link>
         <a
           target="_blank"
-          href="https://github.com/youlaitech/vue3-element-admin"
+          href="https://github.com/youlaitech/NaiGeLan-Admin"
         >
           <el-dropdown-item>Github</el-dropdown-item>
         </a>
